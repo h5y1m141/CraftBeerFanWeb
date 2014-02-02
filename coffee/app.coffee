@@ -1,6 +1,6 @@
 express = require('express')
 routes = require('./routes')
-
+shop = require('./routes/shop')
 http = require('http')
 path = require('path')
 conf = require('config')
@@ -18,8 +18,17 @@ app.use(express.logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
+app.use(express.bodyParser())
+app.use express.cookieParser()
+app.use(express.session({
+  key:"node.acs"
+  secret:"craftbeerfan"
+  })
+)
 app.use(app.router)
-
+app.use (req,res) ->
+  app.locals.latitude  = req.session.latitude
+  app.locals.longitude = req.session.longitude
 
 
 if app.get('env') is 'development'
@@ -28,6 +37,7 @@ if app.get('env') is 'development'
 
 app.get('/', routes.index)
 
+app.post('/shop/find', shop.find)
 http.createServer(app).listen(app.get('port'), ->
   console.log "Express server listening on port #{app.get('port')}"
 )

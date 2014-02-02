@@ -1,9 +1,11 @@
 (function() {
-  var app, conf, express, http, path, routes;
+  var app, conf, express, http, path, routes, shop;
 
   express = require('express');
 
   routes = require('./routes');
+
+  shop = require('./routes/shop');
 
   http = require('http');
 
@@ -31,13 +33,29 @@
 
   app.use(express.methodOverride());
 
+  app.use(express.bodyParser());
+
+  app.use(express.cookieParser());
+
+  app.use(express.session({
+    key: "node.acs",
+    secret: "craftbeerfan"
+  }));
+
   app.use(app.router);
+
+  app.use(function(req, res) {
+    app.locals.latitude = req.session.latitude;
+    return app.locals.longitude = req.session.longitude;
+  });
 
   if (app.get('env') === 'development') {
     app.use(express.errorHandler());
   }
 
   app.get('/', routes.index);
+
+  app.post('/shop/find', shop.find);
 
   http.createServer(app).listen(app.get('port'), function() {
     return console.log("Express server listening on port " + (app.get('port')));
