@@ -6,3 +6,10 @@ body {
 .sidebar-nav {
     padding: 9px 0;
 }
+
+#map_canvas{
+    width: 800px;
+    height: 500px;
+    margin: 0;
+    padding: 0;    
+}
