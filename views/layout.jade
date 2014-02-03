@@ -3,9 +3,71 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href='/stylesheets/bootstrap.css', type='text/css', rel='stylesheet')
+    link(href='/stylesheets/font-awesome.css', type='text/css', rel='stylesheet')
+    link(href='/stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
+    link(href='/stylesheets/userdefine.css', type='text/css', rel='stylesheet')
     script(type='text/javascript', src='/javascripts/jquery.js')
     script(type='text/javascript', src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBcPB3dD25CurN2oc5dBtE68BXxL4Iks4s&sensor=false')
     script(type='text/javascript', src='/javascripts/craftBeerShopMap.js')
     
   body
-    block content
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          .nav-collapse
+            ul.nav
+              li.divider-vertical
+              li
+                a.brand(href='#')
+                  img.thumbnail(src='/images/appicon.png', alt='サイトロゴ')
+              li
+                span.icon-bar
+                h3 CraftBeerFan
+
+
+    .container-fluid
+      .row-fluid
+        .span2
+          .row-fluid
+            .span6
+              img.span12.thumbnail(src='/images/profile.jpg', alt='')
+            .span6
+              h6 小山田浩
+              a(href='#') Profile
+              | |
+              a(href='../index.html') Logout
+          br
+          .well.sidebar-nav
+            ul.nav.nav-list
+              li
+                #accordian2.accordion
+                  .accordion-group
+                    .accordion-heading
+                      a.accordion-toggle.btn(style='text-decoration: none; text-align: left;', href='/dashboard')
+                        i.icon-home.icon-white
+                        span  ホーム
+                  .accordion-group
+                    .accordion-heading
+                      a.accordion-toggle.btn(style='text-decoration: none; text-align: left;', href='/score')
+                        i.icon-list-alt
+                        span  訪問状況
+                  .accordion-group
+                    .accordion-heading
+                      a.accordion-toggle.btn(style='text-decoration: none; text-align: left;', href='/place/form')
+                        i.icon-search
+                        span  企業検索
+
+        .span10
+            
+          .row-fluid
+            block content
+
+    script
+      $('.textarea').wysihtml5();
+    script(type='text/javascript', charset='utf-8')
+      $(prettyPrint);
