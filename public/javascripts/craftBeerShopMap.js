@@ -39,7 +39,7 @@ function attachMessage(marker) {
 			console.log(result);
 			if (status == google.maps.GeocoderStatus.OK) {
 				new google.maps.InfoWindow({
-					content: "<h3>" + marker.title + "</h3><p>" + marker.shopInfo + "</p>"
+					content: "<h3>" + marker.title + "</h3><p>お店についての詳細情報：" + marker.shopInfo + "</p>"
 				}).open(marker.getMap(), marker);
 			}
 		});
@@ -56,16 +56,13 @@ function callACS(data,map){
 		success:function(items){
 			for(var i = 0; i < items.length; i++) {
 				var _latlng = new google.maps.LatLng(items[i].latitude,items[i].longitude),shopInfo;
-				if(typeof items[i].custom_fields.shopInfo ==='undefined'){
-					shopInfo = 'なし';
-				}else{
-					shopInfo = items[i].custom_fields.shopInfo;
-				}
+				var _shopInfo = confirmShopData(items[i].custom_fields.shopInfo);
+				var _iconImage = selectIconImage(items[i].custom_fields.shopFlg);
 				var _marker = new google.maps.Marker({
 					position:_latlng,
 					title:items[i].name,
-					shopInfo:shopInfo,
-					shopFlg:items[i].custom_fields.shopFlg
+					shopInfo:_shopInfo,
+					icon:_iconImage
 				});
 				attachMessage(_marker);
 				_marker.setMap(map);
@@ -73,4 +70,25 @@ function callACS(data,map){
 			}
 		}
 	});	
+}
+
+function confirmShopData(item){
+	var shopInfo;
+	if(typeof item ==='undefined'){
+		shopInfo = '調査中';
+	}else{
+		shopInfo = items[i].custom_fields.shopInfo;
+	}
+	return shopInfo;
+}
+function selectIconImage(shopFlg){
+	var image;
+	if(shopFlg === 'true'){
+		image = '/images/bottle.png';
+	} else {
+		image = '/images/tumblrIcon.png';
+
+	}
+	
+	return image;
 }
