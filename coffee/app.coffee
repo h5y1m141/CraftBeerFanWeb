@@ -30,14 +30,22 @@ app.use (req,res) ->
   app.locals.latitude  = req.session.latitude
   app.locals.longitude = req.session.longitude
 
+#tokenを作るメソッド
+csrf = (req, res, next) ->
+  res.locals._csrf = req.session._csrf
+  next()
+
 
 if app.get('env') is 'development'
   app.use(express.errorHandler())
 
-
+# routing
+## GET method 
 app.get('/', routes.index)
 
+## POST
 app.post('/shop/find', shop.find)
+
 http.createServer(app).listen(app.get('port'), ->
   console.log "Express server listening on port #{app.get('port')}"
 )

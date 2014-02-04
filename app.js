@@ -1,5 +1,5 @@
 (function() {
-  var app, conf, express, http, path, routes, shop;
+  var app, conf, csrf, express, http, path, routes, shop;
 
   express = require('express');
 
@@ -48,6 +48,11 @@
     app.locals.latitude = req.session.latitude;
     return app.locals.longitude = req.session.longitude;
   });
+
+  csrf = function(req, res, next) {
+    res.locals._csrf = req.session._csrf;
+    return next();
+  };
 
   if (app.get('env') === 'development') {
     app.use(express.errorHandler());
